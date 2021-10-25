@@ -2,10 +2,15 @@
   <div style="height: 50px;line-height: 50px;border-bottom: 1px solid #ccc;display: flex">
     <div style="width: 200px;padding-left: 25px;font-weight: bold;color: aqua">机房后台监测管理系统</div>
     <div style="flex: 1;text-align: center"><span id="hitokoto" style="background-image: linear-gradient(60deg, #3d3393 0%, #2b76b9 37%, #2cacd1 65%, #35eb93 100%);-webkit-background-clip: text; color: transparent; font-weight: bold;font-size: 22px">:D 获取中...</span></div>
-    <div style="width: 100px">
+    <div style="width: 120px">
       <el-dropdown>
-        <span class="el-dropdown-link">
-            {{user.username}}
+        <span class="el-dropdown-link" style="height: 50px;display:flex;align-items: center">
+          <el-avatar
+              style="margin: 0 10px 0 0"
+              :size="30"
+              :src="user.pic"
+          ></el-avatar>
+            <span style="font-size: 15px;color: #8cc5ff">{{user.username}}</span>
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <template #dropdown>
@@ -35,7 +40,8 @@ export default {
   data(){
     return{
       user:{
-        username:null
+        username:null,
+        pic:null
       }
     }
   },
@@ -64,6 +70,6 @@ el-dropdown-link {
 }
 
 .el-icon-arrow-down {
-  font-size: 12px;
+  font-size: 15px;
 }
 </style>
