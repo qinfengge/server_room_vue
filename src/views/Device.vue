@@ -34,6 +34,15 @@
       <el-table-column type="selection" width="55"> </el-table-column>
       <el-table-column prop="id" label="ID" sortable> </el-table-column>
       <el-table-column prop="dname" label="设备名称"> </el-table-column>
+      <el-table-column prop="onsw" label="设备开关" sortable>
+        <template #default="scope">
+        <el-switch v-model="scope.row.onsw"
+                   :active-value=1
+                   :inactive-value=0
+                   @change="switchChange(scope.row)"
+        />
+        </template>
+      </el-table-column>
       <el-table-column prop="type" label="设备类型" sortable>
         <template #default="scope">
           <span v-if="scope.row.type===1">温度传感器</span>
@@ -224,6 +233,16 @@ export default {
         this.upsVis = true
       }
     },
+    switchChange(row){
+      request.put("/devices/update",row).then(res =>{
+        if (res.code==0){
+          ElMessage.success('开关成功!')
+          this.load() //刷新表格数据
+        }else{
+          ElMessage.error('开关失败!'+res.msg)
+        }
+      })
+    },
     digAddData(){
       if (this.flag===1){
         this.form.did = this.did
@@ -342,6 +361,7 @@ export default {
         }
       }).then(res =>{
         if (res.code==0){
+          console.log(res)
           this.tableData=res.data.records
           this.total=res.data.total
           this.loading = false
@@ -361,7 +381,7 @@ export default {
       form:{},
       search:'',
       currentPage:1,
-      pageSize:3,
+      pageSize:5,
       total:null,
       dialogVisible: false,
       dialogVisible1: false,
