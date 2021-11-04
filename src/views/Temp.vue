@@ -26,7 +26,6 @@
     <el-table
         :data="tableData"
         style="width: 100%"
-        :row-class-name="tableRowClassName"
         border
         v-loading="loading"
         @selection-change="handleSelectionChange"
@@ -110,8 +109,9 @@
 </template>
 
 <script>
-import { ElMessage } from 'element-plus'
+import {ElMessage} from 'element-plus'
 import request from "@/utils/request";
+
 export default {
   mounted() {
     this.drawLine();
@@ -176,7 +176,6 @@ export default {
     },
     Edit(row){
       this.form = JSON.parse(JSON.stringify(row))
-      console.log(this.form)
       this.dialogVisible1 = true
       //因为弹窗未打开时无法获取元素节点,因此this.$refs['upload']不存在
       //使用nextTick来处理未来元素
@@ -224,7 +223,6 @@ export default {
           search: this.search
         }
       }).then(res =>{
-        console.log(res)
         if (res.code==0){
           this.tableData=res.data.records
           this.total=res.data.total
@@ -236,6 +234,19 @@ export default {
       this.currentPage=pageNum
       this.load()
     },
+    // tableRowClassName({row, rowIndex}) {
+    //   this.twIds = []
+    //   this.tempWarnId.forEach(item =>{
+    //     this.twIds.push(item.id)
+    //     console.log(this.twIds)
+    //   })
+    //   if (row.id in this.twIds){
+    //     return 'warning-row'
+    //   }else {
+    //     return ''
+    //   }
+    // },
+
   },
   data() {
     return {

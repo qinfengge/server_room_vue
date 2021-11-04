@@ -71,7 +71,7 @@
       </el-table-column>
     </el-table>
     <el-dialog
-        title="新增用户"
+        title="新增设备"
         v-model="dialogVisible"
         width="30%"
     >
@@ -103,7 +103,7 @@
     </el-dialog>
 <!--    编辑dialog-->
     <el-dialog
-        title="编辑用户"
+        title="编辑设备"
         v-model="dialogVisible1"
         width="30%"
     >
@@ -112,7 +112,7 @@
           <el-input v-model="form.dname" style="width: 60%;"></el-input>
         </el-form-item>
         <el-form-item label="设备类型">
-          <el-select v-model="form.type" clearable placeholder="请选择">
+          <el-select v-model="form.typeName" clearable placeholder="请选择">
             <el-option
                 v-for="item in options"
                 :key="item.value"
@@ -295,7 +295,13 @@ export default {
     },
     Edit(row){
       this.form = JSON.parse(JSON.stringify(row))
-      console.log(this.form)
+      if (this.form.type==1){
+        this.form.typeName="温度传感器"
+      }else if (this.form.type==2){
+        this.form.typeName="湿度传感器"
+      }else if (this.form.type==3){
+        this.form.typeName="UPS"
+      }
       this.dialogVisible1 = true
       //因为弹窗未打开时无法获取元素节点,因此this.$refs['upload']不存在
       //使用nextTick来处理未来元素
@@ -378,7 +384,9 @@ export default {
   },
   data() {
     return {
-      form:{},
+      form:{
+        typeName:null
+      },
       search:'',
       currentPage:1,
       pageSize:5,

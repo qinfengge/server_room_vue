@@ -15,6 +15,7 @@
         <el-menu-item index="/show">系统概览</el-menu-item>
         <el-menu-item index="/manager">用户管理</el-menu-item>
         <el-menu-item index="/device">设备管理</el-menu-item>
+        <el-menu-item index="/warning">预警管理</el-menu-item>
       </el-sub-menu>
       <el-sub-menu index="2" v-if="user.role===1">
         <template #title>

@@ -8,6 +8,8 @@ import Temp from "@/views/Temp";
 import Ups from "@/views/Ups";
 import Mois from "@/views/Mois";
 import Video from "@/views/Video";
+import AddWarning from "@/views/AddWarning";
+import Warning from "@/views/Warning";
 
 const routes = [
   {
@@ -54,6 +56,16 @@ const routes = [
         path: '/video',
         name: 'Video',
         component: Video
+      },
+      {
+        path: '/addWarning',
+        name: 'AddWarning',
+        component: AddWarning
+      },
+      {
+        path: '/warning',
+        name: 'Warning',
+        component: Warning
       },
     ]
   },
