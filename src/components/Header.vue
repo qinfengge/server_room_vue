@@ -64,22 +64,24 @@ export default {
         console.log(this.$store.state.msgValue)
         console.log(this.msgValue)
         const _this = this
-        if (this.msgValue!==this.$store.state.msgValue){
-          for (let i = 0; i < this.msg.length; i++){
-            (function(i) {
-              setTimeout(function() {
-                if (_this.msg[i].isShow==0){
-                  ElNotification({
-                    title: '温度警告!!!',
-                    message: _this.msg[i].msg,
-                    type: 'error',
-                    duration: 10000,
+        if (this.user.role==1){
+          if (this.msgValue!==this.$store.state.msgValue){
+            for (let i = 0; i < this.msg.length; i++){
+              (function(i) {
+                setTimeout(function() {
+                  if (_this.msg[i].isShow==0){
+                    ElNotification({
+                      title: '温度警告!!!',
+                      message: _this.msg[i].msg,
+                      type: 'error',
+                      duration: 10000,
+                    })
+                  }
+                  request.put("/msg/isShow",_this.msg[i]).then(res =>{
                   })
-                }
-                request.put("/msg/isShow",_this.msg[i]).then(res =>{
-                })
-              }, 5000 * i);
-            })(i);
+                }, 5000 * i);
+              })(i);
+            }
           }
         }
         this.msgValue = this.$store.state.msgValue
@@ -97,7 +99,8 @@ export default {
     return{
       user:{
         username:null,
-        pic:null
+        pic:null,
+        role: 2
       },
       msg:{
         username: 111,
@@ -111,9 +114,6 @@ export default {
     this.loadMsg()
     let userStr = sessionStorage.getItem("user")
     this.user = JSON.parse(userStr)
-    if (!userStr){
-      window.location.href = '/login'
-    }
 
     request.get('https://v1.hitokoto.cn?/c=j')
         .then(res => {

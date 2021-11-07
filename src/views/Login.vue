@@ -6,8 +6,8 @@
         <el-form-item size="normal" prop="username">
           <el-input v-model="form.username" prefix-icon="el-icon-user-solid"></el-input>
         </el-form-item>
-        <el-form-item size="normal" prop="passwd">
-          <el-input v-model="form.passwd" prefix-icon="el-icon-lock" show-password></el-input>
+        <el-form-item size="normal" prop="password">
+          <el-input v-model="form.password" prefix-icon="el-icon-lock" show-password></el-input>
         </el-form-item>
         <el-form-item size="normal" prop="code">
           <div style="display: flex">
@@ -37,9 +37,9 @@ export default {
       form:{},
       rules:{
         username:[{
-          required: true, message: '请输入用户名!', trigger: 'blur'
+          required: true, message: '请输入用户名或邮箱!', trigger: 'blur'
         }],
-        passwd:[{
+        password:[{
           required: true, message: '请输入密码!', trigger: 'blur'
         }]
       },
@@ -60,7 +60,6 @@ export default {
             return
           }
           request.post("/user/login",this.form).then(res =>{
-            console.log(this.form.passwd)
             if (res.code==0){
               ElMessage.success('登陆成功!')
               sessionStorage.setItem("user",JSON.stringify(res.data)) //缓存用户信息

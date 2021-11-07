@@ -14,13 +14,14 @@ request.interceptors.request.use(config => {
 
     // config.headers['token'] = user.token;  // 设置请求头
     // 取出sessionStorage里面存的用户信息
-    let userStr = sessionStorage.getItem("user")
-    if (config.url.includes('/')||config.url.includes('/manager')){
-        if (!userStr){
-            router.push("/login")
-            console.log(userStr)
-        }
-    }
+    // let userStr = sessionStorage.getItem("user")
+    // if (config.url.includes('/')||config.url.includes('/manager')){
+    //     if (!userStr){
+    //         router.push("/login")
+    //         console.log(userStr)
+    //         alert(222)
+    //     }
+    // }
     return config
 }, error => {
     return Promise.reject(error)

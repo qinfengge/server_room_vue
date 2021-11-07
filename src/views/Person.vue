@@ -1,11 +1,11 @@
 <template>
   <div>
     <el-card style="width: 40%; margin: 10px">
-      <el-form ref="form" :model="form" label-width="80px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item style="text-align: center" label-width="0">
           <el-upload
               class="avatar-uploader"
-              action="http://localhost:8181/files/upload"
+              action="http://localhost:8181/file/upload"
               :show-file-list="false"
               :on-success="handleAvatarSuccess"
           >
@@ -15,6 +15,9 @@
         </el-form-item>
         <el-form-item label="用户名">
           <el-input v-model="form.username" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱" prop="email">
+          <el-input v-model="form.email"></el-input>
         </el-form-item>
         <el-form-item label="电话">
           <el-input v-model="form.phone"></el-input>
@@ -29,7 +32,7 @@
           <el-input v-model="form.address"></el-input>
         </el-form-item>
         <el-form-item label="密码">
-          <el-input v-model="form.passwd" show-password></el-input>
+          <el-input v-model="form.password" show-password></el-input>
         </el-form-item>
       </el-form>
       <div style="text-align: center">
@@ -46,8 +49,26 @@ import request from "@/utils/request";
 export default {
   name: "Person",
   data() {
+    var checkEmail = (rule, value, callback) => {
+      const mailReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/
+      if (!value) {
+        return callback(new Error('邮箱不能为空'))
+      }
+      setTimeout(() => {
+        if (mailReg.test(value)) {
+          callback()
+        } else {
+          callback(new Error('请输入正确的邮箱格式'))
+        }
+      }, 100)
+    }
     return {
-      form: {}
+      form: {},
+      rules:{
+        email: [
+          { validator: checkEmail, trigger: 'blur' }
+        ],
+      }
     }
   },
   created() {
@@ -56,25 +77,29 @@ export default {
   },
   methods: {
     handleAvatarSuccess(res) {
-      this.form.avatar = res.data
+      this.form.pic = res.data
       this.$message.success("上传成功")
       // this.update()
     },
     update() {
-      request.put("/user/update", this.form).then(res => {
-        console.log(res)
-        if (res.code === '0') {
-          this.$message({
-            type: "success",
-            message: "更新成功"
-          })
-          sessionStorage.setItem("user", JSON.stringify(this.form))
-          // 触发Layout更新用户信息
-          this.$emit("userInfo")
-        } else {
-          this.$message({
-            type: "error",
-            message: res.msg
+      this.$refs['form'].validate((valid) =>{
+        if (valid){
+          request.put("/user/update", this.form).then(res => {
+            console.log(res)
+            if (res.code === '0') {
+              this.$message({
+                type: "success",
+                message: "更新成功"
+              })
+              sessionStorage.setItem("user", JSON.stringify(this.form))
+              // 触发Layout更新用户信息
+              this.$emit("userInfo")
+            } else {
+              this.$message({
+                type: "error",
+                message: res.msg
+              })
+            }
           })
         }
       })
